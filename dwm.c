@@ -2107,8 +2107,7 @@ tagothermon(const Arg *arg, int dir)
 void
 tile(Monitor *m)
 {
-	unsigned int i, n, h, mw, my, ty;
-    unsigned int w, ms, ss, g;
+	unsigned int i, n, h, w, ms, ss, g;
 	Client *c;
 
     Area *ga = m->pertag->areas[m->pertag->curtag], *ma = ga + 1, *sa = ga + 2, *a;
@@ -2124,6 +2123,13 @@ tile(Monitor *m)
 	for (n = 0, c = nexttiled(m->clients); c; c = nexttiled(c->next), n++);
 	if (n == 0)
 		return;
+
+    if (n == 1) {
+        c = nexttiled(m->clients);
+        resize(c, m->wx + m->ogappx, m->wy + m->ogappx, m->ww - 2 * c->bw - 2 * m->ogappx, m->wh - 2 * c->bw - 2 * m->ogappx, 0);
+        return;
+        }
+
 
 	ma->n = MIN(n, m->nmaster), sa->n = n - ma->n;
 	/* calculate area rectangles */
