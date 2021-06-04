@@ -29,7 +29,21 @@ static const char *colors[][3]      = {
 };
 
 /* tagging */
-static const char *tags[] = { "1", "2", "3", "4", "5", "6", "7", "8", "9" };
+#define MAX_TAGLEN 16
+#define MONS_TAGGED 2
+#define TAGMON(mon) (mon->num < MONS_TAGGED ? mon->num : MONS_TAGGED-1)
+static char tags[][MONS_TAGGED][MAX_TAGLEN] = {
+    /* monitor 0, monitor 1, ... */
+    { "1",        "1" },
+    { "2",        "2" },
+    { "3",        "3" },
+    { "4",        "4" },
+    { "5",        "5" },
+    { "6",        "6" },
+    { "7",        "7" },
+    { "8",        "8" },
+    { "9",        "9" },
+};
 
 static const Rule rules[] = {
 	/* xprop(1):
@@ -121,6 +135,7 @@ static Key keys[] = {
     { MODKEY|ControlMask,   		XK_comma,  cyclelayout,    {.i = -1 } },
 	{ MODKEY|ControlMask,           XK_period, cyclelayout,    {.i = +1 } },
 	{ MODKEY,                       XK_space,  setlayout,      {0} },
+    { MODKEY,                       XK_n,      nametag,        {0} },
     TILEKEYS(MODKEY,                                           1, 0, 0)
 	TILEKEYS(MODKEY|ShiftMask,                                 0, 1, 0)
 	TILEKEYS(MODKEY|ControlMask,                               0, 0, 1)
