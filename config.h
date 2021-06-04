@@ -3,6 +3,7 @@
 
 #include "push.c" /* for push patch*/
 #include "fibonacci.c" /* for fibonachi patch*/
+#include "tatami.c" /* for tatami patch*/
 /* appearance */
 static const unsigned int borderpx  = 3;        /* border pixel of windows */
 static const unsigned int gappx     = 20;       /* gaps between windows */
@@ -43,7 +44,7 @@ static const Rule rules[] = {
 /* layout(s) */
 static const float mfact     = 0.55; /* factor of master area size [0.05..0.95] */
 static const int nmaster     = 1;    /* number of clients in master area */
-static const int resizehints = 1;    /* 1 means respect size hints in tiled resizals */
+static const int resizehints = 0;    /* 1 means respect size hints in tiled resizals */
 
 static const Layout layouts[] = {
 	/* symbol     arrange function */
@@ -54,6 +55,7 @@ static const Layout layouts[] = {
 	{ ">M>",      centeredfloatingmaster },
     { "[@]",      spiral },
  	{ "[\\]",      dwindle },
+    { "|+|",      tatami },
     { NULL,       NULL },
 };
 
