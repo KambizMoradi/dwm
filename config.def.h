@@ -2,6 +2,7 @@
 
 
 #include "push.c" /* for push patch*/
+#include "fibonacci.c" /* for fibonachi patch*/
 /* appearance */
 static const unsigned int borderpx  = 3;        /* border pixel of windows */
 static const unsigned int gappx     = 20;       /* gaps between windows */
@@ -51,6 +52,8 @@ static const Layout layouts[] = {
 	{ "[M]",      monocle },
     { "|M|",      centeredmaster },
 	{ ">M>",      centeredfloatingmaster },
+    { "[@]",      spiral },
+ 	{ "[\\]",      dwindle },
     { NULL,       NULL },
 };
 
@@ -93,10 +96,10 @@ static Key keys[] = {
 	{ MODKEY,                       XK_t,      setlayout,      {.v = &layouts[0]} },
 	{ MODKEY,                       XK_f,      setlayout,      {.v = &layouts[1]} },
 	{ MODKEY,                       XK_m,      setlayout,      {.v = &layouts[2]} },
-    { MODKEY|ControlMask,   		XK_comma,  cyclelayout,    {.i = -1 } },
-	{ MODKEY|ControlMask,           XK_period, cyclelayout,    {.i = +1 } },
     { MODKEY,                       XK_u,      setlayout,      {.v = &layouts[3]} },
 	{ MODKEY,                       XK_o,      setlayout,      {.v = &layouts[4]} },
+    { MODKEY|ControlMask,   		XK_comma,  cyclelayout,    {.i = -1 } },
+	{ MODKEY|ControlMask,           XK_period, cyclelayout,    {.i = +1 } },
 	{ MODKEY,                       XK_space,  setlayout,      {0} },
 	{ MODKEY|ShiftMask,             XK_space,  togglefloating, {0} },
     { MODKEY,                       XK_s,      togglesticky,   {0} },
