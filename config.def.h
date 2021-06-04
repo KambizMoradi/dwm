@@ -14,25 +14,26 @@ static const unsigned int snap      = 32;       /* snap pixel */
 static const int swallowfloating    = 0;        /* 1 means swallow floating windows by default */
 static const int showbar            = 1;        /* 0 means no bar */
 static const int topbar             = 1;        /* 0 means bottom bar */
-static const char *fonts[]          = { "Roboto Mono:size=14" };
+static const char *fonts[]          = { "Roboto Mono:size=16" };
 static const char dmenufont[]       = "Roboto Mono:size=16";
 static const char col_gray1[]       = "#000000";
 static const char col_gray2[]       = "#ffffff";
 static const char col_gray3[]       = "#ffffff";
 static const char col_gray4[]       = "#ffffff";
 static const char col_cyan[]        = "#0066ff";
-static const unsigned int baralpha = 0x66;
+static const unsigned int baralpha = 0x99;
 static const unsigned int borderalpha = OPAQUE;
 static const char *colors[][3]      = {
 	/*               fg         bg         border   */
 	[SchemeNorm] = { "#ffffff", "#000000", "#000000" },
-    [SchemeInv]  = { "#000000", "#ffffff", "#000000" },
-	[SchemeSel]  = { "#000000", "#005fff", "#005fff" },
+    [SchemeInv]  = { "#ffffff", "#000000", "#000000" },
+	[SchemeSel]  = { "#ffffff", "#003fff", "#000000" },
 };
 static const unsigned int alphas[][3]      = {
 	/*               fg      bg        border     */
 	[SchemeNorm] = { OPAQUE, baralpha, borderalpha },
 	[SchemeSel]  = { OPAQUE, baralpha, borderalpha },
+	[SchemeInv]  = { OPAQUE, baralpha, borderalpha },
 };
 
 /* tagging */
@@ -45,9 +46,6 @@ static const Rule rules[] = {
 	 */
     /* class                instance    title           tags mask   isfloating  isterminal  noswallow   monitor */
     { "st-256color",        NULL,       NULL,           0,          0,          1,          0,          -1 },
-    { "obsidian",           NULL,       NULL,           1 << 1,     0,          0,          -1,         -1 },
-    { "firefox",            NULL,       NULL,           1 << 2,     0,          0,          -1,         -1 },
-    { "TelegramDesktop",    NULL,       NULL,           1 << 3,     0,          0,          -1,         -1 },
     { NULL,                 NULL,       "Event Tester", 0,          0,          0,          1,          -1 }, /* xev */
 };
 
