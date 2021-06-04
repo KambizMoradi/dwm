@@ -48,7 +48,8 @@
 #endif /* __OpenBSD */
 
 #include "drw.h"
-#include "util.h"
+#include "util.h" 
+
 
 /* macros */
 #define BUTTONMASK              (ButtonPressMask|ButtonReleaseMask)
