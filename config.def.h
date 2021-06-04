@@ -14,8 +14,8 @@ static const unsigned int snap      = 32;       /* snap pixel */
 static const int swallowfloating    = 0;        /* 1 means swallow floating windows by default */
 static const int showbar            = 1;        /* 0 means no bar */
 static const int topbar             = 1;        /* 0 means bottom bar */
-static const char *fonts[]          = { "monospace:size=16" };
-static const char dmenufont[]       = "monospace:size=16";
+static const char *fonts[]          = { "Roboto Mono:size=16" };
+static const char dmenufont[]       = "Roboto Mono:size=16";
 static const char col_gray1[]       = "#000000";
 static const char col_gray2[]       = "#ffffff";
 static const char col_gray3[]       = "#ffffff";
@@ -25,7 +25,7 @@ static const char *colors[][3]      = {
 	/*               fg         bg         border   */
 	[SchemeNorm] = { col_gray3, col_gray1, col_gray2 },
     [SchemeInv]  = { col_gray1, col_gray3, col_gray2 },
-	[SchemeSel]  = { col_gray4, col_cyan,  col_cyan  },
+	[SchemeSel]  = { col_gray4, col_cyan,  "#000075" },
 };
 
 /* tagging */
@@ -47,7 +47,7 @@ static const Rule rules[] = {
 /* layout(s) */
 static const float mfact     = 0.55; /* factor of master area size [0.05..0.95] */
 static const int dirs[3]      = { DirHor, DirVer, DirVer }; /* tiling dirs */
-static const float facts[3]   = { 1.1,    1.1,    1.1 };    /* tiling facts */
+static const float facts[3]   = { 1.1,    1,    1 };    /* tiling facts */
 static const int nmaster     = 1;    /* number of clients in master area */
 static const int resizehints = 0;    /* 1 means respect size hints in tiled resizals */
 
@@ -76,8 +76,8 @@ static const Layout layouts[] = {
 
 #define TILEKEYS(MOD,G,M,S) \
 	{ MOD, XK_r, setdirs,  {.v = (int[])  { INC(G * +1),   INC(M * +1),   INC(S * +1) } } }, \
-	{ MOD, XK_h, setfacts, {.v = (float[]){ INC(G * -0.1), INC(M * -0.1), INC(S * -0.1) } } }, \
-	{ MOD, XK_l, setfacts, {.v = (float[]){ INC(G * +0.1), INC(M * +0.1), INC(S * +0.1) } } },
+	{ MOD, XK_h, setfacts, {.v = (float[]){ INC(G * -0.05), INC(M * -0.05), INC(S * -0.05) } } }, \
+	{ MOD, XK_l, setfacts, {.v = (float[]){ INC(G * +0.05), INC(M * +0.05), INC(S * +0.05) } } },
 
 /* helper for spawning shell commands in the pre dwm-5.0 fashion */
 #define SHCMD(cmd) { .v = (const char*[]){ "/bin/sh", "-c", cmd, NULL } }
@@ -146,7 +146,7 @@ static Key keys[] = {
 	TAGKEYS(                        XK_7,                      6)
 	TAGKEYS(                        XK_8,                      7)
 	TAGKEYS(                        XK_9,                      8)
-	{ MODKEY|ShiftMask,             XK_q,      quit,           {0} },
+	{ MODKEY|ControlMask|ShiftMask|Mod4Mask,    XK_q,      quit,           {0} },
     { MODKEY|ControlMask,           XK_j,      pushdown,       {0} },
 	{ MODKEY|ControlMask,           XK_k,      pushup,         {0} },
 };
