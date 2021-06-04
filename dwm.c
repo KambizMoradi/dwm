@@ -214,7 +214,6 @@ static void maprequest(XEvent *e);
 static void monocle(Monitor *m);
 static void motionnotify(XEvent *e);
 static void movemouse(const Arg *arg);
-static void nametag(const Arg *arg);
 static Client *nexttiled(Client *c);
 static void pop(Client *);
 static void propertynotify(XEvent *e);
@@ -550,7 +549,7 @@ buttonpress(XEvent *e)
 			/* do not reserve space for vacant tags */
 			if (!(occ & 1 << i || m->tagset[m->seltags] & 1 << i))
 				continue;
-            x += TEXTW(tags[i][TAGMON(selmon)]);
+			x += TEXTW(tags[i]);
         } while (ev->x >= x && ++i < LENGTH(tags));
 		if (i < LENGTH(tags)) {
 			click = ClkTagBar;
@@ -885,14 +884,14 @@ drawbar(Monitor *m)
 		if (!(occ & 1 << i || m->tagset[m->seltags] & 1 << i))
 		continue;
 
-        w = TEXTW(tags[i][TAGMON(m)]);
+		w = TEXTW(tags[i]);
         if (m == selmon) {
 			drw_setscheme(drw, scheme[m->tagset[m->seltags] & 1 << i ? SchemeSel : SchemeNorm]);
 		}
 		else {
 			drw_setscheme(drw, scheme[m->tagset[m->seltags] & 1 << i ? SchemeInv : SchemeNorm]);
 		}
-		drw_text(drw, x, 0, w, bh, lrpad / 2, tags[i][TAGMON(m)], urg & 1 << i);
+		drw_text(drw, x, 0, w, bh, lrpad / 2, tags[i], urg & 1 << i);
 		x += w;
 	}
 	w = blw = TEXTW(m->ltsymbol);
@@ -1426,25 +1425,6 @@ movemouse(const Arg *arg)
 		selmon = m;
 		focus(NULL);
 	}
-}
-
-void
-nametag(const Arg *arg) {
-       char *cp, name[MAX_TAGLEN];
-       FILE *fp;
-       int i;
-
-       if(!(fp = (FILE*)popen("echo -n | dmenu", "r")))
-               fprintf(stderr, "dwm: Could not popen 'echo -n | dmenu'\n");
-       cp = fgets(name, MAX_TAGLEN, fp);
-       pclose(fp);
-       if(cp == NULL)
-               return;
-
-       for(i = 0; i < LENGTH(tags); i++)
-               if(selmon->tagset[selmon->seltags] & (1 << i))
-                       memcpy(tags[i][TAGMON(selmon)], name, MAX_TAGLEN);
-       drawbars();
 }
 
 Client *
