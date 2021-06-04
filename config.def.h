@@ -6,9 +6,9 @@
 #include "tatami.c" /* for tatami patch*/
 /* appearance */
 static const unsigned int borderpx  = 3;        /* border pixel of windows */
-static const unsigned int gappx     = 20;       /* gaps between windows */
-static const unsigned int igappx    = 5;        /* size of inner gaps */
-static const unsigned int ogappx    = 5;        /* size of outer gaps */
+static const unsigned int gappx     = 15;       /* gaps between windows */
+static const unsigned int igappx    = 15;        /* size of inner gaps */
+static const unsigned int ogappx    = 15;        /* size of outer gaps */
 static const int gapsforone	    = 0;	/* 1 enable gaps when only one window is open */
 static const unsigned int snap      = 32;       /* snap pixel */
 static const int swallowfloating    = 0;        /* 1 means swallow floating windows by default */
@@ -98,8 +98,8 @@ static Key keys[] = {
 	{ MODKEY,                       XK_k,      focusstack,     {.i = -1 } },
 	{ MODKEY,                       XK_i,      incnmaster,     {.i = +1 } },
 	{ MODKEY,                       XK_d,      incnmaster,     {.i = -1 } },
-	{ MODKEY|Mod4Mask,              XK_h,      setmfact,       {.f = -0.05} },
-	{ MODKEY|Mod4Mask,              XK_l,      setmfact,       {.f = +0.05} },
+	{ MODKEY,                       XK_h,      setmfact,       {.f = -0.05} },
+	{ MODKEY,                       XK_l,      setmfact,       {.f = +0.05} },
     { MODKEY|Mod4Mask,              XK_r,      reorganizetags, {0} },
 	{ MODKEY,                       XK_Return, zoom,           {0} },
 	{ MODKEY,                       XK_Tab,    view,           {0} },
