@@ -5,7 +5,7 @@
 #include "fibonacci.c" /* for fibonachi patch*/
 #include "tatami.c" /* for tatami patch*/
 /* appearance */
-static const unsigned int borderpx  = 0;        /* border pixel of windows */
+static const unsigned int borderpx  = 2;        /* border pixel of windows */
 static const unsigned int gappx     = 4;       /* gaps between windows */
 static const unsigned int igappx    = 4;        /* size of inner gaps */
 static const unsigned int ogappx    = 4;        /* size of outer gaps */
@@ -25,7 +25,7 @@ static const char *colors[][3]      = {
 	/*               fg         bg         border   */
 	[SchemeNorm] = { "#ffffff", "#000000", "#000000" },
     [SchemeInv]  = { "#ffffff", "#000000", "#000000" },
-	[SchemeSel]  = { "#00a6fe", "#000000", "#0000ff" },
+	[SchemeSel]  = { "#ffffff", "#00a6fe", "#00a6fe" },
 };
 
 /* tagging */
