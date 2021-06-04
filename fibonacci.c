@@ -10,7 +10,7 @@ fibonacci(Monitor *m, int s)
 		return;
 	if (n == 1) {
 		c = nexttiled(m->clients);
-		resize(c, m->wx, m->wy, m->ww - 2 * c->bw, m->wh - 2 * c->bw, 0);
+		resize(c, m->wx + m->gappx, m->wy + m->gappx, m->ww - 2 * c->bw - 2 * m->gappx, m->wh - 2 * c->bw - 2 * m->gappx, 0);
 		return;
 	}
 
