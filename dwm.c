@@ -876,11 +876,9 @@ drawbar(Monitor *m)
 	drw_rect(drw, 0, 0, m->ww, bh, lrpad / 2, 1);
  
 	/* draw status first so it can be overdrawn by tags later */
-    if (m == selmon || 1) { /* status is only drawn on selected monitor */
-		sw = TEXTW(stext) - lrpad + w; /* 2px right padding */
-		drw_text(drw, m->ww - sw, 0, sw, bh, 0, stext, 0);
-        drw_text(drw, m->ww - w, 0, w, bh, lrpad / 2, m->ltsymbol, 0);
-	}
+	sw = TEXTW(stext) - lrpad + 2; /* 2px right padding */
+	drw_text(drw, m->ww - sw, 0, sw, bh, 0, stext, 0);
+    drw_text(drw, m->ww - sw , 0, w, bh, lrpad / 2, m->ltsymbol, 0); 
 
 	for (c = m->clients; c; c = c->next) {
         occ |= c->tags == 255 ? 0 : c->tags;
