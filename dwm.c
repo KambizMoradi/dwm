@@ -878,7 +878,7 @@ drawbar(Monitor *m)
 	/* draw status first so it can be overdrawn by tags later */
 	sw = TEXTW(stext) - lrpad + 2; /* 2px right padding */
 	drw_text(drw, m->ww - sw, 0, sw, bh, 0, stext, 0);
-    drw_text(drw, m->ww - sw , 0, w, bh, lrpad / 2, m->ltsymbol, 0); 
+    drw_text(drw, m->ww - sw + 10 , 0, w, bh, lrpad / 2, m->ltsymbol, 0); 
 
 	for (c = m->clients; c; c = c->next) {
         occ |= c->tags == 255 ? 0 : c->tags;
