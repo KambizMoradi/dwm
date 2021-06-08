@@ -6,9 +6,9 @@
 #include "tatami.c" /* for tatami patch*/
 /* appearance */
 static const unsigned int borderpx  = 0;        /* border pixel of windows */
-static const unsigned int gappx     = 4;       /* gaps between windows */
-static const unsigned int igappx    = 4;        /* size of inner gaps */
-static const unsigned int ogappx    = 4;        /* size of outer gaps */
+static const unsigned int gappx     = 8;       /* gaps between windows */
+static const unsigned int igappx    = 8;        /* size of inner gaps */
+static const unsigned int ogappx    = 8;        /* size of outer gaps */
 static const int gapsforone	    = 0;	/* 1 enable gaps when only one window is open */
 static const unsigned int snap      = 32;       /* snap pixel */
 static const int swallowfloating    = 0;        /* 1 means swallow floating windows by default */
@@ -32,8 +32,8 @@ static const char *colors[][3]      = {
 static const unsigned int alphas[][3]      = {
 	/*               fg      bg        border     */
 	[SchemeNorm] = { OPAQUE, baralpha, borderalpha },
-	[SchemeSel]  = { OPAQUE, baralpha, borderalpha },
 	[SchemeInv]  = { OPAQUE, baralpha, borderalpha },
+	[SchemeSel]  = { OPAQUE, baralpha, borderalpha },
 };
 
 /* tagging */
