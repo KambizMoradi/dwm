@@ -93,7 +93,7 @@ static const Key keys[] = {
 	{ MODKEY|ControlMask,		XK_comma,			cyclelayout,			{.i = -1 } },
 	{ MODKEY|ControlMask,		XK_z,				cyclelayout,			{.i = -1 } },
 	{ MODKEY|ControlMask,		XK_period,			cyclelayout,			{.i = +1 } },
-	{ MODKEY,					XK_space,			setlayout,				{0} },
+	// { MODKEY,					XK_space,			setlayout,				{0} },
 	{ MODKEY|ShiftMask,			XK_space,			togglefloating,			{0} },
 	{ MODKEY,					XK_s,				togglesticky,			{0} },
 	{ MODKEY|ShiftMask,			XK_f,				togglefullscr,			{0} },
