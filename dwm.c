@@ -215,6 +215,7 @@ static void resize(Client *c, int x, int y, int w, int h, int interact);
 static void resizeclient(Client *c, int x, int y, int w, int h);
 static void resizemouse(const Arg *arg);
 static void restack(Monitor *m);
+static void rotatetags(const Arg *arg);
 static void rotatestack(const Arg *arg);
 static void run(void);
 static void scan(void);
@@ -1583,6 +1584,34 @@ restack(Monitor *m)
 	if (m == selmon && (m->tagset[m->seltags] & m->sel->tags) && selmon->lt[selmon->sellt] != &layouts[2])
 		warp(m->sel);
 }
+
+void
+rotatetags(const Arg *arg)
+{
+	const int rot = abs(arg->i);
+	const unsigned int tagset = selmon->tagset[selmon->seltags];
+	unsigned int newtagset;
+
+	/* check the direction of the shift */
+	if (arg->i < 0) {
+		 /* shift tags right */
+		 newtagset = (tagset >> rot) | (tagset << (LENGTH(tags) - rot));
+	} else {
+		 /* shift tags left */
+		 newtagset = (tagset << rot) | (tagset >> (LENGTH(tags) - rot));
+	}
+
+	/* mask the tag bits */
+	newtagset &= TAGMASK;
+
+	if (newtagset) {
+		 selmon->tagset[selmon->seltags] = newtagset;
+		 focus(NULL);
+		 arrange(selmon);
+	}
+}
+
+
 
 void
 rotatestack(const Arg *arg)
