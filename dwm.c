@@ -2650,7 +2650,7 @@ centeredmaster(Monitor *m)
 		return;
 	if(n == 1){
         c = nexttiled(m->clients);
-        resize(c, m->wx, m->wy, m->ww - 2 * c->bw, m->wh - 2 * c->bw, 0);
+		resize(c, m->wx + m->gap->gappx, m->wy + m->gap->gappx, m->ww - 2 * c->bw - 2 * m->gap->gappx, m->wh - 2 * c->bw - 2 * m->gap->gappx, 0);
         return;
     }
 
@@ -2716,7 +2716,7 @@ centeredfloatingmaster(Monitor *m)
 		return;
 	if(n == 1){
         c = nexttiled(m->clients);
-        resize(c, m->wx, m->wy, m->ww - 2 * c->bw, m->wh - 2 * c->bw, 0);
+		resize(c, m->wx + m->gap->gappx, m->wy + m->gap->gappx, m->ww - 2 * c->bw - 2 * m->gap->gappx, m->wh - 2 * c->bw - 2 * m->gap->gappx, 0);
         return;
     }
 
