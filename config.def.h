@@ -36,6 +36,7 @@ static const Rule rules[] = {
 	{ "firefox",		NULL,				NULL,		1<<2,			0,				-1 },
 	{ "Brave-browser",	NULL,				NULL,		1<<2,			0,				-1 },
 	{ "Chromium",		NULL,				NULL,		1<<2,			0,				-1 },
+	{ "Uget-gtk",		NULL,				NULL,		1<<8,			0,				-1 },
 };
 
 /* layout(s) */
