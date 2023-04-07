@@ -2104,7 +2104,7 @@ tile(Monitor *m)
 	Client *c;
 
 	Area *ga = m->pertag->areas[m->pertag->curtag], *ma = ga + 1, *sa = ga + 2, *a;
-	unsigned int n, i, w, h, ms, ss;
+	unsigned int n, i, w, h, ms, ss, g;
 	float f;
 
 	/* print layout symbols */
@@ -2121,23 +2121,24 @@ tile(Monitor *m)
 	ma->n = MIN(n, m->nmaster), sa->n = n - ma->n;
 	/* calculate area rectangles */
 	f = ma->n == 0 ? 0 : (sa->n == 0 ? 1 : ga->fact / 2);
+	g = ma->n == 0 || sa->n == 0 ? 0 : m->gap->gappx;
 	if(ga->dir == DirHor || ga->dir == DirRotHor)
-		ms = f * m->ww, ss = m->ww - ms,
-		ma->x = ga->dir == DirHor ? 0 : ss, ma->y = 0, ma->fx = ma->x + ms, ma->fy = m->wh,
-		sa->x = ga->dir == DirHor ? ms : 0, sa->y = 0, sa->fx = sa->x + ss, sa->fy = m->wh;
+        ms = f * (m->ww - g), ss = m->ww - ms - g,
+        ma->x = ga->dir == DirHor ? 0 + m->gap->gappx : ss + g + m->gap->gappx, ma->y = 0 + m->gap->gappx, ma->fx = ma->x + ms - 2*m->gap->gappx, ma->fy = m->wh - m->gap->gappx,
+        sa->x = ga->dir == DirHor ? ms + g - m->gap->gappx : 0 + m->gap->gappx, sa->y = 0 + m->gap->gappx, sa->fx = sa->x + ss, sa->fy = m->wh - m->gap->gappx;
 	else
-		ms = f * m->wh, ss = m->wh - ms,
-		ma->x = 0, ma->y = ga->dir == DirVer ? 0 : ss, ma->fx = m->ww, ma->fy = ma->y + ms,
-		sa->x = 0, sa->y = ga->dir == DirVer ? ms : 0, sa->fx = m->ww, sa->fy = sa->y + ss;
+        ms = f * (m->wh - g), ss = m->wh - ms - g,
+        ma->x = 0 + m->gap->gappx, ma->y = ga->dir == DirVer ? 0 + m->gap->gappx : ss + g + m->gap->gappx, ma->fx = m->ww - m->gap->gappx, ma->fy = ma->y + ms - 2*m->gap->gappx,
+        sa->x = 0 + m->gap->gappx, sa->y = ga->dir == DirVer ? ms + g - m->gap->gappx : 0 + m->gap->gappx, sa->fx = m->ww - m->gap->gappx, sa->fy = sa->y + ss;
 	/* tile clients */
 	for(c = nexttiled(m->clients), i = 0; i < n; c = nexttiled(c->next), i++) {
 		a = ma->n > 0 ? ma : sa;
 		f = i == 0 || ma->n == 0 ? a->fact : 1, f /= --a->n + f;
-		w = (a->dir == DirVer ? 1 : f) * (a->fx - a->x);
-		h = (a->dir == DirHor ? 1 : f) * (a->fy - a->y);
-		resize(c, m->wx + a->x, m->wy + a->y, w - 2 * c->bw, h - 2 * c->bw, False);
-		a->x += a->dir == DirHor ? w : 0;
-		a->y += a->dir == DirVer ? h : 0;
+        w = a->dir == DirVer ? a->fx - a->x : f * (a->fx - a->x - a->n * m->gap->gappx);
+		h = a->dir == DirHor ? a->fy - a->y : f * (a->fy - a->y - a->n * m->gap->gappx);;
+		resize(c, m->wx + a->x, m->wy + a->y, w - 2 * c->bw, h - 2 * c->bw, 0);
+		a->x += a->dir == DirHor ? w + m->gap->gappx : 0;
+		a->y += a->dir == DirVer ? h + m->gap->gappx : 0;
 	}
 }
 
