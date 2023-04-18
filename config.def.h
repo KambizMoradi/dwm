@@ -24,6 +24,8 @@ static const XPoint stickyiconbb    = {2,8};	/* defines the bottom right corner 
 
 /* tagging */
 static const char *tags[] = { "1", "2", "3", "4", "5", "6", "7", "8", "9" };
+static const char *tagsalt[] = { "", "2", "3", "4", "5", "6", "7", "" , ""};
+static const int momentaryalttags = 0; /* 1 means alttags will show only when key is held down*/
 
 static const Rule rules[] = {
 	/* xprop(1):
@@ -33,10 +35,10 @@ static const Rule rules[] = {
 	/* class			instance			title		tags mask		isfloating		monitor */
 	{ "obsidian",		NULL,				NULL,		1<<1,			0,				-1 },
 	{ "Zotero",			NULL,				NULL,		1<<1,			0,				-1 },
-	{ "firefox",		NULL,				NULL,		1<<2,			0,				-1 },
-	{ "Brave-browser",	NULL,				NULL,		1<<2,			0,				-1 },
-	{ "Chromium",		NULL,				NULL,		1<<2,			0,				-1 },
-	{ "Uget-gtk",		NULL,				NULL,		1<<8,			0,				-1 },
+	{ "firefox",		NULL,				NULL,		1<<0,			0,				-1 },
+	{ "Brave-browser",	NULL,				NULL,		1<<0,			0,				-1 },
+	{ "Chromium",		NULL,				NULL,		1<<0,			0,				-1 },
+	{ "Uget-gtk",		NULL,				NULL,		1<<7,			0,				-1 },
 };
 
 /* layout(s) */
@@ -78,8 +80,8 @@ static const Layout layouts[] = {
 /* commands */
 static char dmenumon[2] = "0"; /* component of dmenucmd, manipulated in spawn() */
 static const char *dmenucmd[] = { "dmenu_run", "-m", dmenumon, "-fn", dmenufont, "-nb", col_gray1, "-nf", col_gray3, "-sb", col_cyan, "-sf", col_gray4, NULL };
-static const char *termcmd[]  = { "kitty", NULL };
-static const char *termcmd2[]  = { "alacritty", NULL };
+static const char *termcmd[]  = { "alacritty", NULL };
+static const char *termcmd2[]  = { "kitty", NULL };
 
 static const Key keys[] = {
 	/* modifier					key					function				argument */
@@ -108,6 +110,7 @@ static const Key keys[] = {
 	{ MODKEY|ControlMask,		XK_comma,			cyclelayout,			{.i = -1 } },
 	{ MODKEY|ControlMask,		XK_z,				cyclelayout,			{.i = -1 } },
 	{ MODKEY|ControlMask,		XK_period,			cyclelayout,			{.i = +1 } },
+	{ MODKEY|ControlMask,		XK_x,				cyclelayout,			{.i = +1 } },
 	// { MODKEY,					XK_space,			setlayout,				{0} },
 	TILEKEYS(MODKEY,                                           1, 0, 0)
 	TILEKEYS(MODKEY|ShiftMask,                                 0, 1, 0)
@@ -130,6 +133,7 @@ static const Key keys[] = {
 	{ MODKEY|ShiftMask,			XK_comma,			tagmon,					{.i = -1 } },
 	{ MODKEY|ShiftMask,			XK_z,				tagmon,					{.i = -1 } },
 	{ MODKEY|ShiftMask,			XK_period,			tagmon,					{.i = +1 } },
+	{ MODKEY,                       XK_n,      togglealttag,   {0} },
 	{ MODKEY|ControlMask,		XK_j,				pushdown,				{0} },
 	{ MODKEY|ControlMask,		XK_k,				pushup,					{0} },
 	{ MODKEY,					XK_Left,			rotatetags,				{.i = -1 } },
