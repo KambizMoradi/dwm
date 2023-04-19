@@ -107,10 +107,10 @@ static const Key keys[] = {
 	{ MODKEY,					XK_m,				setlayout,				{.v = &layouts[2]} },
 	{ MODKEY,					XK_u,				setlayout,				{.v = &layouts[3]} },
 	{ MODKEY,					XK_o,				setlayout,				{.v = &layouts[4]} },
-	{ MODKEY|ControlMask,		XK_comma,			cyclelayout,			{.i = -1 } },
-	{ MODKEY|ControlMask,		XK_z,				cyclelayout,			{.i = -1 } },
-	{ MODKEY|ControlMask,		XK_period,			cyclelayout,			{.i = +1 } },
-	{ MODKEY|ControlMask,		XK_x,				cyclelayout,			{.i = +1 } },
+	{ MODKEY|ControlMask,		XK_comma,			cyclelayout,			{.i = +1 } },
+	{ MODKEY|ControlMask,		XK_z,				cyclelayout,			{.i = +1 } },
+	{ MODKEY|ControlMask,		XK_period,			cyclelayout,			{.i = -1 } },
+	{ MODKEY|ControlMask,		XK_x,				cyclelayout,			{.i = -1 } },
 	// { MODKEY,					XK_space,			setlayout,				{0} },
 	TILEKEYS(MODKEY,                                           1, 0, 0)
 	TILEKEYS(MODKEY|ShiftMask,                                 0, 1, 0)
