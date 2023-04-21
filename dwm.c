@@ -292,6 +292,7 @@ static int xerror(Display *dpy, XErrorEvent *ee);
 static int xerrordummy(Display *dpy, XErrorEvent *ee);
 static int xerrorstart(Display *dpy, XErrorEvent *ee);
 static void zoom(const Arg *arg);
+
 static pid_t getparentprocess(pid_t p);
 static int isdescprocess(pid_t p, pid_t c);
 static Client *swallowingclient(Window w);
@@ -2480,6 +2481,7 @@ unmanage(Client *c, int destroyed)
 {
 	Monitor *m = c->mon;
 	XWindowChanges wc;
+
 	if (c->swallowing) {
 		unswallow(c);
 		return;
@@ -2493,7 +2495,6 @@ unmanage(Client *c, int destroyed)
 		focus(NULL);
 		return;
 	}
-
 
 	detach(c);
 	detachstack(c);

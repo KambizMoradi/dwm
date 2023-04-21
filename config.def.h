@@ -33,13 +33,16 @@ static const Rule rules[] = {
 	 *	WM_CLASS(STRING) = instance, class
 	 *	WM_NAME(STRING) = title
 	 */
-	/* class			instance			title		tags mask		isfloating			monitor */
-	{ "obsidian",		NULL,				NULL,		1<<1,			0,			0,			0,			-1 },
-	{ "Zotero",			NULL,				NULL,		1<<1,			0,			0,			0,			-1 },
-	{ "firefox",		NULL,				NULL,		1<<0,			0,			0,			0,			-1 },
-	{ "Brave-browser",	NULL,				NULL,		1<<0,			0,			0,			0,			-1 },
-	{ "Chromium",		NULL,				NULL,		1<<0,			0,			0,			0,			-1 },
-	{ "Uget-gtk",		NULL,				NULL,		1<<7,			0,			0,			0,			-1 },
+	/* class			instance			title		tags mask		isfloating	isterminal  noswallow	monitor */
+	{ "obsidian",		NULL,				NULL,			1<<1,			0,			0,			0,			-1 },
+	{ "Zotero",			NULL,				NULL,			1<<1,			0,			0,			0,			-1 },
+	{ "firefox",		NULL,				NULL,			1<<0,			0,			0,			0,			-1 },
+	{ "Brave-browser",	NULL,				NULL,			1<<0,			0,			0,			0,			-1 },
+	{ "Surf",			NULL,				NULL,				0,			0,			0,			0,			-1 },
+	{ "st-256color",	NULL,				NULL,				0,			0,			1,			0,			-1 },
+	{ "Chromium",		NULL,				NULL,			1<<0,			0,			0,			0,			-1 },
+	{ "Uget-gtk",		NULL,				NULL,			1<<7,			0,			0,			0,			-1 },
+	{ NULL,				NULL,				"Event Tester", 0,				0,			0,			1,			-1 }, /* xev */
 };
 
 /* layout(s) */
