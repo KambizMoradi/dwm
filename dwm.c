@@ -985,6 +985,7 @@ drawstatusbar(Monitor *m, int bh, char* stext) {
 void
 drawbar(Monitor *m)
 {
+	int indn;
 	int x, w, wdelta, tw = 0;
 	int boxs = drw->fonts->h / 9;
 	int boxw = drw->fonts->h / 6 + 2;
@@ -1006,6 +1007,7 @@ drawbar(Monitor *m)
 	}
 	x = 0;
 	for (i = 0; i < LENGTH(tags); i++) {
+		indn = 0;
 		w = TEXTW(tags[i]);
 		wdelta = selmon->alttag ? abs(TEXTW(tags[i]) - TEXTW(tagsalt[i])) / 2 : 0;
 		if (m == selmon) {
@@ -1015,10 +1017,13 @@ drawbar(Monitor *m)
 			drw_setscheme(drw, scheme[m->tagset[m->seltags] & 1 << i ? SchemeInv : SchemeNorm]);
 		}
 		drw_text(drw, x, 0, w, bh, wdelta + lrpad / 2, (selmon->alttag ? tagsalt[i] : tags[i]), urg & 1 << i);
-		if (occ & 1 << i)
-			drw_rect(drw, x + boxs, boxs, boxw, boxw,
-				m == selmon && selmon->sel && selmon->sel->tags & 1 << i,
-				urg & 1 << i);
+		for (c = m->clients; c; c = c->next) {
+			if (c->tags & (1 << i)) {
+				drw_rect(drw, x, 1 + (indn * 4), selmon->sel == c ? 8 : 3, 3, 1, urg & 1 << i);
+				indn++;
+			}
+		}
+
 		x += w;
 	}
 	w = TEXTW(m->ltsymbol);
