@@ -1,14 +1,14 @@
 /* See LICENSE file for copyright and license details. */
 
 /* appearance */
-static const unsigned int borderpx  = 3;        /* border pixel of windows */
+static const unsigned int borderpx  = 2;        /* border pixel of windows */
 static const unsigned int fborderpx = 1;        /* border pixel of floating windows */
 static const Gap default_gap        = {.isgap = 1, .realgap = 10, .gappx = 0};
 static const unsigned int snap      = 32;       /* snap pixel */
 static const int swallowfloating    = 0;        /* 1 means swallow floating windows by default */
 static const int showbar            = 1;        /* 0 means no bar */
 static const int topbar             = 1;        /* 0 means bottom bar */
-static const char *fonts[]          = { "monospace:size=14" };
+static const char *fonts[]          = { "monospace:size=12" };
 static const char dmenufont[]       = "monospace:size=10";
 static const char col_gray1[]       = "#000000";
 static const char col_gray2[]       = "#444444";
@@ -42,7 +42,6 @@ static const Rule rules[] = {
 	{ "Surf",			NULL,				NULL,				0,			0,			0,			0,			-1 },
 	{ "st-256color",	NULL,				NULL,				0,			0,			1,			0,			-1 },
 	{ "Chromium",		NULL,				NULL,			1<<0,			0,			0,			0,			-1 },
-	{ "Uget-gtk",		NULL,				NULL,			1<<7,			0,			0,			0,			-1 },
 	{ NULL,				NULL,				"Event Tester", 0,				0,			0,			1,			-1 }, /* xev */
 };
 
@@ -57,7 +56,7 @@ static const int lockfullscreen = 1; /* 1 will force focus on the fullscreen win
 static const Layout layouts[] = {
 	/* symbol     arrange function */
 	{ "<||",      tile },    /* first entry is default */
-	{ "[M]",      monocle },
+	{ "[0]",      monocle },
 	{ "><>",      NULL },    /* no layout function means floating behavior */
 	{ "|M|",      centeredmaster },
 	{ ">M>",      centeredfloatingmaster },
