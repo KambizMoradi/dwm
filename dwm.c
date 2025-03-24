@@ -1,6 +1,6 @@
 /* See LICENSE file for copyright and license details.
  *
- * dynamic window manager is designed like any other X client as well. It is
+ * dynamic window manager is designed like any other X client as well. It isdwmc
  * driven through handling X events. In contrast to other X clients, a window
  * manager selects for SubstructureRedirectMask on the root window, to receive
  * events about window (dis-)appearance. Only one X connection at a time is
@@ -222,6 +222,9 @@ static void showhide(Client *c);
 static void spawn(const Arg *arg);
 static void tag(const Arg *arg);
 static void tagmon(const Arg *arg);
+static void tagnextmon(const Arg *arg);
+static void tagprevmon(const Arg *arg);
+static void tagothermon(const Arg *arg, int dir);
 static void tile(Monitor *m);
 static void togglebar(const Arg *arg);
 static void togglefloating(const Arg *arg);
@@ -1782,6 +1785,36 @@ tagmon(const Arg *arg)
 	if (!selmon->sel || !mons->next)
 		return;
 	sendmon(selmon->sel, dirtomon(arg->i));
+}
+
+void
+tagnextmon(const Arg *arg)
+{
+	tagothermon(arg, 1);
+}
+
+void
+tagprevmon(const Arg *arg)
+{
+	tagothermon(arg, -1);
+}
+
+void
+tagothermon(const Arg *arg, int dir)
+{
+	Client *sel;
+	Monitor *newmon;
+
+	if (!selmon->sel || !mons->next)
+		return;
+	sel = selmon->sel;
+	newmon = dirtomon(dir);
+	sendmon(sel, newmon);
+	if (arg->ui & TAGMASK) {
+		sel->tags = arg->ui & TAGMASK;
+		focus(NULL);
+		arrange(newmon);
+	}
 }
 
 void
