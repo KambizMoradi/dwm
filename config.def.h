@@ -19,6 +19,8 @@ static const char *colors[][3]      = {
   [SchemeInv]  = { col_gray1, col_gray3, col_gray2 },
 	[SchemeSel]  = { col_gray4, col_cyan,  col_cyan  },
 };
+static const XPoint stickyicon[]    = { {0,0}, {4,0}, {4,6}, {2,4}, {0,6}, {0,0} }; /* represents the icon as an array of vertices */
+static const XPoint stickyiconbb    = {2,8};	/* defines the bottom right corner of the polygon's bounding box (speeds up scaling) */
 
 /* tagging */
 static const char *tags[] = { "1", "2", "3", "4", "5", "6", "7", "8", "9" };
