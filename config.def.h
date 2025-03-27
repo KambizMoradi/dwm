@@ -104,6 +104,8 @@ static const Key keys[] = {
 	{ MODKEY,                       XK_equal,  setgaps,        {.i = +2 } },
 	{ MODKEY|ShiftMask,             XK_minus,  setgaps,        {.i = GAP_RESET } },
 	{ MODKEY|ShiftMask,             XK_equal,  setgaps,        {.i = GAP_TOGGLE} },
+	{ MODKEY,                       XK_Left,   rotatetags,     {.i = -1 } },
+	{ MODKEY,                       XK_Right,  rotatetags,     {.i = +1 } },
 	TAGKEYS(                        XK_1,                      0)
 	TAGKEYS(                        XK_2,                      1)
 	TAGKEYS(                        XK_3,                      2)
