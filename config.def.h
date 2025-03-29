@@ -30,9 +30,12 @@ static const Rule rules[] = {
 	 *	WM_CLASS(STRING) = instance, class
 	 *	WM_NAME(STRING) = title
 	 */
-	/* class      instance    title       tags mask     isfloating   monitor */
-	{ "Gimp",     NULL,       NULL,       0,            1,           -1 },
-	{ "Firefox",  NULL,       NULL,       1 << 8,       0,           -1 },
+	/* class            instance    title           tags mask     isfloating   monitor */
+	{ "firefox",        NULL,       NULL,           1<<0,         0,           -1 },
+	{ "Brave-browser",	NULL,       NULL,           1<<0,         0,           -1 },
+	{ "obsidian",       NULL,       NULL,           1<<1,         0,           -1 },
+	{ "Zotero",         NULL,       NULL,           1<<1,         0,           -1 },
+	{ NULL,             NULL,       "Event Tester", 0,            0,           -1 }, /* xev */
 };
 
 /* layout(s) */
