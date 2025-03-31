@@ -78,7 +78,7 @@ static const Layout layouts[] = {
 #define SHCMD(cmd) { .v = (const char*[]){ "/bin/sh", "-c", cmd, NULL } }
 
 /* commands */
-static const char *termcmd[]  = { "st", NULL };
+#define TERMINAL_ENVVAR "TERMINAL"
 
 static const Key keys[] = {
 	/* modifier                     key        function        argument */
