@@ -25,6 +25,9 @@ static const XPoint stickyiconbb    = {2,8};	/* defines the bottom right corner 
 /* tagging */
 static const char *tags[] = { "1", "2", "3", "4", "5", "6", "7", "8", "9" };
 
+/* Lockfile */
+static char lockfile[] = "/tmp/dwm.lock";
+
 static const Rule rules[] = {
 	/* xprop(1):
 	 *	WM_CLASS(STRING) = instance, class
