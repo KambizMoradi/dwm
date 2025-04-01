@@ -1490,6 +1490,8 @@ manage(Window w, XWindowAttributes *wa)
 	c->x = MAX(c->x, c->mon->wx);
 	c->y = MAX(c->y, c->mon->wy);
 	c->bw = borderpx;
+  if (c->isfloating)
+		c->bw = fborderpx;
 
 	wc.border_width = c->bw;
 	XConfigureWindow(dpy, w, CWBorderWidth, &wc);
@@ -2439,16 +2441,21 @@ togglefloating(const Arg *arg)
 	if (selmon->sel->isfullscreen) /* no support for fullscreen windows */
 		return;
 	selmon->sel->isfloating = !selmon->sel->isfloating || selmon->sel->isfixed;
-	if (selmon->sel->isfloating)
+	if (selmon->sel->isfloating) {
     /* restore last known float dimensions */
+    selmon->sel->bw = fborderpx;
+		configure(selmon->sel);
+        int borderdiff = (fborderpx - borderpx) * 2;
 		resize(selmon->sel, selmon->sel->sfx, selmon->sel->sfy,
-		       selmon->sel->sfw, selmon->sel->sfh, False);
-	else {
+		       selmon->sel->sfw - borderdiff, selmon->sel->sfh - borderdiff, False);
+  } else {
 		/* save last known float dimensions */
 		selmon->sel->sfx = selmon->sel->x;
 		selmon->sel->sfy = selmon->sel->y;
 		selmon->sel->sfw = selmon->sel->w;
 		selmon->sel->sfh = selmon->sel->h;
+    selmon->sel->bw = borderpx;
+    configure(selmon->sel);
 	}
 	arrange(selmon);
 }
