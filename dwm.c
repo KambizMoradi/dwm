@@ -2814,10 +2814,39 @@ updatestatus(void)
 void
 updatetitle(Client *c)
 {
-	if (!gettextprop(c->win, netatom[NetWMName], c->name, sizeof c->name))
-		gettextprop(c->win, XA_WM_NAME, c->name, sizeof c->name);
-	if (c->name[0] == '\0') /* hack to mark broken clients */
-		strcpy(c->name, broken);
+    XClassHint ch;
+    int has_wm_class = 0;
+
+    /* Try to get WM_CLASS */
+    if (XGetClassHint(dpy, c->win, &ch)) {
+        char *name_part = NULL;
+
+        // Prefer instance name (res_name), fallback to class name (res_class)
+        if (ch.res_name) {
+            name_part = ch.res_class;
+        } else if (ch.res_class) {
+            name_part = ch.res_name;
+        }
+
+        // Copy the name if found
+        if (name_part) {
+            strncpy(c->name, name_part, sizeof(c->name) - 1);
+            c->name[sizeof(c->name) - 1] = '\0'; // Ensure null termination
+            has_wm_class = 1;
+        }
+
+        XFree(ch.res_name);
+        XFree(ch.res_class);
+    }
+
+    /* Fallback to original behavior if WM_CLASS failed or name is empty */
+    if (!has_wm_class || c->name[0] == '\0') {
+        if (!gettextprop(c->win, netatom[NetWMName], c->name, sizeof c->name))
+            gettextprop(c->win, XA_WM_NAME, c->name, sizeof c->name);
+    }
+
+    if (c->name[0] == '\0') /* hack to mark broken clients */
+        strcpy(c->name, broken);
 }
 
 void
