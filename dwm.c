@@ -1234,7 +1234,7 @@ focusstack(const Arg *arg)
 {
 	Client *c = NULL, *i;
 
-	if(selmon->sel->isfullscreen)
+	if(selmon->sel && selmon->sel->isfullscreen)
 		setfullscreen(selmon->sel, 0);
 	if (!selmon->sel || (selmon->sel->isfullscreen && lockfullscreen))
 		return;
