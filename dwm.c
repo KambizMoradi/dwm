@@ -129,7 +129,7 @@ typedef struct {
 } Gap;
 
 typedef struct Pertag Pertag;
-#define MAXTABS 50
+#define MAXTABS 10
 
 struct Monitor {
 	char ltsymbol[16];
@@ -184,6 +184,7 @@ static void clientmessage(XEvent *e);
 static void configure(Client *c);
 static void configurenotify(XEvent *e);
 static void configurerequest(XEvent *e);
+static int cmpint(const void *a, const void *b);
 static Monitor *createmon(void);
 static void cyclelayout(const Arg *arg);
 static void destroynotify(XEvent *e);
@@ -952,69 +953,127 @@ drawstatusbar(Monitor *m, int bh, char* stext) {
 void
 drawbar(Monitor *m)
 {
-  int indn;
-	int x, w, tw = 0;
-	int boxs = drw->fonts->h / 9;
-	int boxw = drw->fonts->h / 6 + 2;
-	unsigned int i, occ = 0, urg = 0;
-	Client *c;
+    int indn;
+    int x, w, tw = 0;
+    unsigned int i, occ = 0, urg = 0;
+    Client *c;
+    int tab_widths[MAXTABS];
+    int ntabs = 0;
+    int tot_width;
+    int maxsize;
+    int sorted_label_widths[MAXTABS];
+    int dots_width = TEXTW("[...]");
+    int client_count = 0;
 
-	if (!m->showbar)
-		return;
+    if (!m->showbar)
+        return;
 
-	/* draw status first so it can be overdrawn by tags later */
-  if (m == selmon || 1) { 
-    tw = m->ww - drawstatusbar(m, bh, stext);
-	}
+    /* draw status first so it can be overdrawn by tags later */
+    if (m == selmon || 1) { 
+        tw = m->ww - drawstatusbar(m, bh, stext);
+    }
 
-	for (c = m->clients; c; c = c->next) {
-    occ |= c->tags == 255 ? 0 : c->tags;
-		if (c->isurgent)
-			urg |= c->tags;
-	}
-	x = 0;
-	for (i = 0; i < LENGTH(tags); i++) {
-    /* do not draw vacant tags */
-		if (!(occ & 1 << i || m->tagset[m->seltags] & 1 << i))
-		continue;
+    /* Calculate occupied and urgent tags */
+    for (c = m->clients; c; c = c->next) {
+        occ |= c->tags == 255 ? 0 : c->tags;
+        if (c->isurgent)
+            urg |= c->tags;
+    }
 
-		indn = 0;
-		w = TEXTW(tags[i]);
-    if (m == selmon) {
-			drw_setscheme(drw, scheme[m->tagset[m->seltags] & 1 << i ? SchemeSel : SchemeNorm]);
-		}
-		else {
-			drw_setscheme(drw, scheme[m->tagset[m->seltags] & 1 << i ? SchemeInv : SchemeNorm]);
-		}
-		drw_text(drw, x, 0, w, bh, lrpad / 2, tags[i], urg & 1 << i);
+    /* Draw tags */
+    x = 0;
+    for (i = 0; i < LENGTH(tags); i++) {
+        /* do not draw vacant tags */
+        if (!(occ & 1 << i || m->tagset[m->seltags] & 1 << i))
+            continue;
 
-		for (c = m->clients; c; c = c->next) {
-			if (c->tags & (1 << i)) {
-				drw_rect(drw, x, 1 + (indn * 2), selmon->sel == c ? 8 : 4, 4, 1, urg & 1 << i);
-				indn++;
-			}
-		}
-		x += w;
-	}
-	w = TEXTW(m->ltsymbol);
-	drw_setscheme(drw, scheme[SchemeNorm]);
-	x = drw_text(drw, x, 0, w, bh, lrpad / 2, m->ltsymbol, 0);
+        indn = 0;
+        w = TEXTW(tags[i]);
+        if (m == selmon) {
+            drw_setscheme(drw, scheme[m->tagset[m->seltags] & 1 << i ? SchemeSel : SchemeNorm]);
+        }
+        else {
+            drw_setscheme(drw, scheme[m->tagset[m->seltags] & 1 << i ? SchemeInv : SchemeNorm]);
+        }
+        drw_text(drw, x, 0, w, bh, lrpad / 2, tags[i], urg & 1 << i);
 
-	if ((w = m->ww - tw - x) > bh) {
-		if (m->sel) {
-      drw_setscheme(drw, scheme[m == selmon ? SchemeSel : SchemeInv]);
-			drw_text(drw, x, 0, w, bh, lrpad / 2, m->sel->name, 0);
-			if (m->sel->isfloating)
-				drw_rect(drw, x + boxs, boxs, boxw, boxw, m->sel->isfixed, 0);
-      if (m->sel->issticky)
-				drw_polygon(drw, x + boxs, m->sel->isfloating ? boxs * 2 + boxw : boxs, stickyiconbb.x, stickyiconbb.y, boxw, boxw * stickyiconbb.y / stickyiconbb.x, stickyicon, LENGTH(stickyicon), Nonconvex, m->sel->tags & m->sel->mon->tagset[m->sel->mon->seltags]);
-		} else {
-			drw_setscheme(drw, scheme[SchemeNorm]);
-			drw_rect(drw, x, 0, w, bh, 1, 1);
-		}
-	}
-	drw_map(drw, m->barwin, 0, 0, m->ww, bh);
+        for (c = m->clients; c; c = c->next) {
+            if (c->tags & (1 << i)) {
+                drw_rect(drw, x, 1 + (indn * 2), selmon->sel == c ? 8 : 4, 4, 1, urg & 1 << i);
+                indn++;
+            }
+        }
+        x += w;
+    }
+
+    /* Draw layout symbol */
+    w = TEXTW(m->ltsymbol);
+    drw_setscheme(drw, scheme[SchemeNorm]);
+    x = drw_text(drw, x, 0, w, bh, lrpad / 2, m->ltsymbol, 0);
+
+    /* Count visible clients */
+    for (c = m->clients; c; c = c->next)
+        if (ISVISIBLE(c))
+            client_count++;
+
+    /* Calculate tab widths for visible windows */
+    ntabs = 0;
+    tot_width = 0;
+    for (c = m->clients; c && ntabs < MAXTABS; c = c->next) {
+        if (!ISVISIBLE(c)) continue;
+        tab_widths[ntabs] = TEXTW(c->name);
+        tot_width += tab_widths[ntabs];
+        ntabs++;
+    }
+
+    /* Add dots width if we have overflow */
+    if (client_count > MAXTABS)
+        tot_width += dots_width;
+
+    /* Handle overflow if tabs don't fit */
+    if (tot_width > (m->ww - tw - x)) {
+        memcpy(sorted_label_widths, tab_widths, sizeof(int) * ntabs);
+        qsort(sorted_label_widths, ntabs, sizeof(int), cmpint);
+        tot_width = client_count > MAXTABS ? dots_width : 0;
+        for (i = 0; i < ntabs; i++) {
+            if (tot_width + (ntabs - i) * sorted_label_widths[i] > (m->ww - tw - x))
+                break;
+            tot_width += sorted_label_widths[i];
+        }
+        maxsize = ((m->ww - tw - x) - (client_count > MAXTABS ? dots_width : 0)) / (ntabs - i);
+    } else {
+        maxsize = m->ww;
+    }
+
+    /* Draw window tabs */
+    i = 0;
+    for (c = m->clients; c && i < MAXTABS; c = c->next) {
+        if (!ISVISIBLE(c)) continue;
+        if (i >= ntabs) break;
+        if (tab_widths[i] > maxsize) tab_widths[i] = maxsize;
+        w = tab_widths[i];
+        drw_setscheme(drw, scheme[(c == m->sel) ? SchemeSel : SchemeNorm]);
+        drw_text(drw, x, 0, w, bh, 0, c->name, 0);
+        x += w;
+        i++;
+    }
+
+    /* Draw "..." if there are more clients than MAXTABS */
+    if (client_count > MAXTABS) {
+        drw_setscheme(drw, scheme[SchemeNorm]);
+        drw_text(drw, x, 0, dots_width, bh, 0, "[...]", 0);
+        x += dots_width;
+    }
+
+    /* Clean remaining space */
+    if ((w = m->ww - tw - x) > 0) {
+        drw_setscheme(drw, scheme[SchemeNorm]);
+        drw_rect(drw, x, 0, w, bh, 1, 1);
+    }
+
+    drw_map(drw, m->barwin, 0, 0, m->ww, bh);
 }
+
 
 void
 drawbars(void)
