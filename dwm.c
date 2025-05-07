@@ -1021,7 +1021,7 @@ drawbar(Monitor *m)
     tot_width = 0;
     for (c = m->clients; c && ntabs < MAXTABS; c = c->next) {
         if (!ISVISIBLE(c)) continue;
-        tab_widths[ntabs] = TEXTW(c->name);
+        tab_widths[ntabs] = TEXTW(c->name) - lrpad +4 ;
         tot_width += tab_widths[ntabs];
         ntabs++;
     }
@@ -1045,18 +1045,47 @@ drawbar(Monitor *m)
         maxsize = m->ww;
     }
 
+    
     /* Draw window tabs */
-    i = 0;
-    for (c = m->clients; c && i < MAXTABS; c = c->next) {
-        if (!ISVISIBLE(c)) continue;
-        if (i >= ntabs) break;
-        if (tab_widths[i] > maxsize) tab_widths[i] = maxsize;
-        w = tab_widths[i];
-        drw_setscheme(drw, scheme[(c == m->sel) ? SchemeSel : SchemeNorm]);
-        drw_text(drw, x, 0, w, bh, 0, c->name, 0);
-        x += w;
-        i++;
+i = 0;
+for (c = m->clients; c && i < MAXTABS; c = c->next) {
+    if (!ISVISIBLE(c)) continue;
+    if (i >= ntabs) break;
+    if (tab_widths[i] > maxsize) tab_widths[i] = maxsize;
+    w = tab_widths[i];
+    
+    /* Set color scheme */
+    drw_setscheme(drw, scheme[(c == m->sel) ? SchemeSel : SchemeNorm]);
+    
+    /* Draw client name */
+    drw_text(drw, x, 0, w, bh, 0, "", 0);
+
+    if (c->issticky) {
+      drw_text(drw, x, 0, TEXTW("^"), bh, 0, "^", 0);
+      x += TEXTW("^")-lrpad;
     }
+
+    drw_text(drw, x + 2, 0, w, bh, 0, c->name, 0);
+    
+    /* Draw rectangle around floating windows using foreground color */
+    if (c->isfloating) {
+        XSetForeground(drw->dpy, drw->gc, drw->scheme[ColFg].pixel);
+        XDrawRectangle(drw->dpy, drw->drawable, drw->gc,
+                      x + 1, 1, w - 2, bh - 3);
+    }
+
+    
+    x += w;
+    
+    /* Draw separator if this isn't the last tab */
+    if (i < ntabs - 1 && (client_count <= MAXTABS || i < MAXTABS - 1)) {
+        drw_setscheme(drw, scheme[SchemeNorm]);
+        drw_text(drw, x, 0, TEXTW(" ") -lrpad, bh, 0, " ", 0);
+        x += TEXTW(" ")-lrpad;
+    }
+    
+    i++;
+}
 
     /* Draw "..." if there are more clients than MAXTABS */
     if (client_count > MAXTABS) {
